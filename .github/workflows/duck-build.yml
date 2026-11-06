@@ -1,0 +1,28 @@
+name: DUCK macOS Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Build macOS app
+        run: make bundle
+
+      - name: Upload macOS app
+        uses: actions/upload-artifact@v4
+        with:
+          name: duck-macos-build
+          path: build/*.app
+          if-no-files-found: error
+          retention-days: 7
